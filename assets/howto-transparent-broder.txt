@@ -1,0 +1,4 @@
+-Open GIMP 2.
+-Use fuzzy selection/magic wand tool on the image. The white background should be automatically selected.
+-Open color->color to alpha, press OK on the popup window.
+-Export as PNG/JPG.
