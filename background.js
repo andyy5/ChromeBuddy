@@ -6,6 +6,7 @@ $(document).ready(function() { // js alternative: window.addEventListener("load"
 
 function init(){
     $("#forecast-result").hide();
+    setInterval(showDateInfo, 1000); // for clock to update every second
 }
 
 function showDateInfo(){
@@ -14,7 +15,7 @@ function showDateInfo(){
     ];
     var dt = new Date();
     var date = monthNames[dt.getMonth()] + " " + dt.getDate();
-    var time = dt.getHours() + ":" + dt.getMinutes();
+    var time = dt.toLocaleTimeString(); //dt.getHours() + ":" + dt.getMinutes();
     document.getElementById("date").innerHTML = date + " || " + time;
 }
 
@@ -55,8 +56,9 @@ function getForecast(){
         var msgHide = "Hide Forecast";
         var msgShow = "Show Forecast";
         var fb = document.getElementById("forecast-button");
+        var fr = document.getElementById("forecast-result");
         //if ($("#forecast-result").is(":visible")){
-        if (fb.innerHTML == msgShow) {
+        if (fb.innerHTML == msgShow & fr.innerHTML == ""){ // only do get request if we hadn't already
             var params = {
                 id : "6173331",
                 units: "metric",
@@ -66,6 +68,9 @@ function getForecast(){
             $.getJSON(url, params, function(data){
                 showForecast(data);
             });
+            fb.innerHTML = msgHide;
+            $("#forecast-result").show();
+        } else if (fb.innerHTML == msgShow) {
             fb.innerHTML = msgHide;
             $("#forecast-result").show();
         } else if (fb.innerHTML == msgHide) {
