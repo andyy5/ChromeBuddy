@@ -2,7 +2,7 @@ $(document).ready(function() {
     init();
     showDateInfo();
     getData();
-    studyMode();
+    communicateWithBackground();
  });
 
 function init(){
@@ -17,7 +17,8 @@ function showDateInfo(){
     var dt = new Date();
     var date = monthNames[dt.getMonth()] + " " + dt.getDate();
     var time = dt.toLocaleTimeString(); //dt.getHours() + ":" + dt.getMinutes();
-    document.getElementById("date").innerHTML = date + "<span class='pipe-color'> || </span>" + time;
+    document.getElementById("date").innerHTML = date;
+    document.getElementById("time").innerHTML = time;
 }
 
 function getData(){
@@ -47,15 +48,15 @@ function showCurrentWeather(data){
     var tempMax = Math.round(data.main.temp_max * 10) / 10;
     var tempMin = Math.round(data.main.temp_min * 10) / 10;
     var weather = data.weather[0].description;
-    html = weather + "<span class='pipe-color'> || </span>" + temp + " [" + tempMin + "," + tempMax + "]" + " (&degC)";
-    document.getElementById("current-weather-result").innerHTML = html;
+    document.getElementById("current-weather-description").innerHTML = weather;
+    document.getElementById("current-weather-temp").innerHTML = temp + " [" + tempMin + "," + tempMax + "]" + " (&degC)";
 }
 
 function getForecast(){
-    $(document).on('click', '#forecast-button', function(){
+    $(document).on('click', '#btn-forecast', function(){
         var msgHide = "Hide Forecast";
         var msgShow = "Show Forecast";
-        var fb = document.getElementById("forecast-button");
+        var fb = document.getElementById("btn-forecast");
         var fr = document.getElementById("forecast-result");
         //if ($("#forecast-result").is(":visible")){
         if (fb.innerHTML == msgShow & fr.innerHTML == ""){ // only do get request if we hadn't already
@@ -170,8 +171,10 @@ function convertNumericMonth(input){
     }
 }
 
+// communicate with background.js
 // refer: http://stackoverflow.com/questions/13546778/how-to-communicate-between-popup-js-and-background-js-in-chrome-extension
-function studyMode(){
+function communicateWithBackground(){
+    // study mode
     var port = chrome.extension.connect({name: "Communicate StudyMode"});
     port.postMessage("popup-opened");
     $(document).on('click', '#checkbox-studymode', function(){
@@ -184,6 +187,22 @@ function studyMode(){
     port.onMessage.addListener(function(msg) {
         if (typeof(msg) === "boolean"){
             $("#checkbox-studymode").prop("checked", msg);
+        } else {
+    // outline color
+            var color = "";
+            if (msg == "blue"){
+                color = "#87CEFA";
+            } else if (msg == "red"){
+                color = "#ff5f5f";
+            } else if (msg == "yellow"){
+                color = "yellow";
+            } else if (msg == "green"){
+                color = "#9afb9a";
+            }
+            $(".pipe-color").css("color", color);
+            $(".banner > h1").css("border-color", color);
+            $("#forecast-container button").css("background-color", color);
+            $("#forecast-result").css("border-color", color);
         }
     });
 }

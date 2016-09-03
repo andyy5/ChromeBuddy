@@ -4,7 +4,7 @@
   "version": "1.0",
 
   "icons": {
-    "16": "assets/icon_16.png",
+    // "16": "assets/icon_16.png",
     "128": "assets/chromelogo_128.png"
   },
 
@@ -12,10 +12,18 @@
     "default_popup": "index.html"
   },
 
-  "permissions": ["webRequest", "webRequestBlocking", "http://*/*", "https://*/*"],
+  "options_page": "options.html",
+
+  "permissions": [
+    "storage",
+    "webRequest", 
+    "webRequestBlocking", 
+    "http://*/*", 
+    "https://*/*"
+  ],
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["jquery-3.1.0.min.js", "background.js"]
   },
 
   "manifest_version": 2

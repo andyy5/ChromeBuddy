@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link href="normalize.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
 
     <title>Chrome Buddy</title>
@@ -11,12 +12,20 @@
       <h1><center>Chrome Buddy</center></h1>
     </div>
 
-    <div id="date"></div>
+    <div id="datetime-container">
+      <span id="date"></span>
+      <span class="pipe-color"> || </span>
+      <span id="time"></span>
+    </div>
 
-    <div id="current-weather-result"></div>
+    <div id="current-weather-container">
+      <span id="current-weather-description"></span>
+      <span class="pipe-color"> || </span>
+      <span id="current-weather-temp"></span>
+    </div>
 
     <div id="forecast-container">
-      <button id="forecast-button">Show Forecast</button>
+      <button id="btn-forecast">Show Forecast</button>
       <p id="forecast-result"></p>
     </div>
 

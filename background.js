@@ -1,21 +1,34 @@
 'use strict'
 
 var studyModeCheckState = false;
+var outlineColor = "blue";
 
-// handle blocking websites
-chrome.extension.onConnect.addListener(function(port) {
-    port.onMessage.addListener(function(msg) {
-        if (msg == "studymode-on"){
-            blockSites(true);
-            studyModeCheckState = true;
-        } else if (msg == "studymode-off"){
-            blockSites(false);
-            studyModeCheckState = false;
-        } else if (msg == "popup-opened"){
-            port.postMessage(studyModeCheckState);
-        }
-  });
-});
+$(document).ready(function() {
+    restoreOptions();
+    communicateWithPopup();
+ });
+
+// communicate to popup.js
+function communicateWithPopup(){
+    chrome.extension.onConnect.addListener(function(port) {
+        port.onMessage.addListener(function(msg) {
+            // handle blocking sites
+            if (msg == "studymode-on"){
+                blockSites(true);
+                studyModeCheckState = true;
+            } else if (msg == "studymode-off"){
+                blockSites(false);
+                studyModeCheckState = false;
+            // handle study mode check state & outline color
+            } else if (msg == "popup-opened"){
+                // send current study mode check state
+                port.postMessage(studyModeCheckState);
+                // send current outline color
+                port.postMessage(outlineColor);
+            }
+        });
+    });
+}
 
 // input val: boolean
 function blockSites(val){
@@ -40,4 +53,23 @@ function blockingCallback(details){
     return {
         cancel: true
     };
+}
+
+// refer: https://developer.chrome.com/extensions/storage
+chrome.storage.onChanged.addListener(function(changes, namespace){
+    for(var key in changes){
+        var storageChange = changes[key];
+        if(key == "outlineColor"){
+            outlineColor = storageChange.newValue;
+        }
+    }
+});
+
+function restoreOptions(){
+    chrome.storage.sync.get({ //asynchronous
+        // set default vals
+        outlineColor: "blue"
+    }, function(obj){
+        outlineColor = obj.outlineColor;
+    })
 }
