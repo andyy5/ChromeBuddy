@@ -1,13 +1,14 @@
 $(document).ready(function() {
-    init();
+    init()
     showDateInfo();
     getData();
     communicateWithBackground();
+    motivationLoad();
+    openOptions();
  });
 
 function init(){
     $("#forecast-result").hide();
-    setInterval(showDateInfo, 1000); // for clock to update every second
 }
 
 function showDateInfo(){
@@ -19,6 +20,7 @@ function showDateInfo(){
     var time = dt.toLocaleTimeString(); //dt.getHours() + ":" + dt.getMinutes();
     document.getElementById("date").innerHTML = date;
     document.getElementById("time").innerHTML = time;
+    setInterval(showDateInfo, 1000); // update clock every second
 }
 
 function getData(){
@@ -206,3 +208,70 @@ function communicateWithBackground(){
         }
     });
 }
+
+function motivationLoad(){
+    // pick a random msg from array
+    var msg = motivate[Math.floor(Math.random() * motivate.length)];
+    $("#motivation-loader").html(msg);
+}
+
+function openOptions(){
+    $(document).on('click', '#btn-options', function(){
+        window.open(chrome.runtime.getURL("options.html"));
+    });
+}
+
+var motivate = [
+'"Most of life is just showing up."',
+'"Negativity gets you nowhere in life."',
+'"Its not about game days, its about the days where youre tired and want to give up." - CP3',
+'"Hindsight is always 20/20."',
+'"Not everyone who works hard is rewarded, but all those who succeeded have worked hard."',
+'"You only see others highlight reel and not the behind-the-scenes."',
+'"Relying on other people for happiness; as soon as you give people that power, you will forever be chasing happiness and you will never fufill it."',
+'"Opportunities are everything you make of it."',
+'"Success is when preparation meets opportunity."',
+'"The difference between good and great is 5%."',
+'"The grass is always greener where you water it."',
+'"In a year from now, you will wish you started today."',
+'"Not everything in life is worth stressing over."',
+'"The way to get started is to quit talking and begin doing."',
+'"Dont let yesterday take up too much of today."',
+'"You learn more from failure than success. Dont let it stop you."',
+'"Its not whether you get knocked down, its whether you get up."',
+'"Work hard in silence-let success be your noise."',
+'"Discipline is unyielding. Force yourself to follow through."',
+'"Try to be the rainbow in someones cloud."',
+'"Life isnt about finding yourself. Life is about creating yourself."',
+'"If there is no wind, row."',
+'"Keep your eyes on the stars, and your feet on the ground."',
+'"What you do today can improve all your tomorrows."',
+'"The secret of getting ahead is getting started."',
+'"If opportunity doesnt knock, build a door."',
+'"Somewhere, something incredible is waiting to be known."',
+'"Dont judge each day by the harvest you reap but by the seeds you plant."',
+'"Out of difficulties grow miracles."',
+'"Life is really simple, but we insist on making it complicated."',
+'"We do not remember days, we remember moments."',
+'"A dream doesnt become reality through magic; it takes sweat, determination, and hard work."',
+'"Do not dwell on the past, do not dream of the future, concentrate the mind on the present moment."',
+'"Character is much easier kept than recovered."',
+'"Education is not prepation for life, it is life itself."',
+'"Success is simple. Do whats right, the right way, at the right time."',
+'"Success consists of going from failure to failure without losing enthusiam."',
+'"The trouble with most of us is that we rather be ruined by praise than saved by criticism."',
+'"It doesnt matter how slowly you go as long as you dont stop."',
+'"Listen, smile, agree, and then do whatever the fuck you were gonna do anyway."',
+'"Man cannot remake himself without suffering, for he is both the marble and the sculptor."',
+'"If you get tired, learn to rest, not to quit"',
+'"If you want something youve never had, then youve got to do something youve never done."',
+'"Life is like a photograph, you need negatives to develop."',
+'"The difference between a master and beginner is that the master has failed more times than the beginner has tried."',
+'"Everyone is creative. Everyone is talented. Few are disciplined."',
+'"Make sure your worst enemy doesnt live between your own two ears."',
+'"Only put off until tomorrow what you are willing to die having left undone."',
+'"Sometimes I feel like giving up, then I remember I have a lot of motherfuckers to prove wrong."',
+'"You may have to fight a battle more than once to win it."',
+'"Once youve accepted your flaws, no one can use them against you."',
+'"Perfection is not attainable, but if we chase perfection we can catch excellence."'
+];

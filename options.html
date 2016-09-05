@@ -19,17 +19,15 @@
 		</div>
 
 		<div id="studymode-container">
-			<p>study mode blocked sites:</p>
+			<p>study mode blocked sites</p>
 			<form>
-				<input type="text"> 
-				<button>Add</button>
+				Add: <input type="text" id="add-url" placeholder="ex: facebook.com"> 
+				<span id="add-url-note">(Separate multiple urls with a comma)</span>
 			</form>
-			<select>
- 				<option value="x">x</option>
- 				<option value="y">yyyyyyyyyyyyyyyyyyyy</option>
- 				<option value="z">z</option>
+			<span>Remove:</span>
+			<select id="remove-url">
+ 				<option value="default"></option>
 			</select>
-			<button>Remove</button>
 		</div>
 
 		<button id="btn-save">Save</button>

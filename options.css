@@ -29,3 +29,8 @@ body {
 #btn-save {
 	margin-top: 5%;
 }
+
+#add-url-note {
+	font-style: italic;
+	font-size: 14px;
+}

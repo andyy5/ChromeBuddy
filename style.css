@@ -36,7 +36,7 @@ body {
 
 #forecast-container {
 	text-align: center;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 
 #forecast-container button {
@@ -55,4 +55,21 @@ body {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	font-weight: bold;
+}
+
+#btn-options {
+	margin: 5px 5px 5px 5px;
+	background:none!important;
+    border:none; 
+    padding:0!important;
+    font: inherit;
+    border-bottom:1px solid black; 
+    cursor: pointer;
+    color: black;
+    float: right;
+}
+
+#motivation-loader {
+	text-align: center;
+	margin: 10px 5px 5px 5px;
 }

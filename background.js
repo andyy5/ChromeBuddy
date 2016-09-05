@@ -2,10 +2,12 @@
 
 var studyModeCheckState = false;
 var outlineColor = "blue";
+var blockedUrls = [""];
 
 $(document).ready(function() {
     restoreOptions();
     communicateWithPopup();
+    storageListener();
  });
 
 // communicate to popup.js
@@ -14,11 +16,11 @@ function communicateWithPopup(){
         port.onMessage.addListener(function(msg) {
             // handle blocking sites
             if (msg == "studymode-on"){
-                blockSites(true);
                 studyModeCheckState = true;
+                blockSites(studyModeCheckState);
             } else if (msg == "studymode-off"){
-                blockSites(false);
                 studyModeCheckState = false;
+                blockSites(studyModeCheckState);
             // handle study mode check state & outline color
             } else if (msg == "popup-opened"){
                 // send current study mode check state
@@ -30,20 +32,23 @@ function communicateWithPopup(){
     });
 }
 
-// input val: boolean
-function blockSites(val){
-    if (val){
+function blockSites(input){
+    console.log("blocked urls: " + blockedUrls);
+
+    // remove the listener so we can replace it with an updated one
+    if (chrome.webRequest.onBeforeRequest.hasListener(blockingCallback)){
+        chrome.webRequest.onBeforeRequest.removeListener(blockingCallback);
+    }
+    // urls: [] will block all sites
+    if (input & blockedUrls.length != 0){
         // add listener to block sites
         chrome.webRequest.onBeforeRequest.addListener(
             blockingCallback, 
             { 
-                urls: ["*://*.facebook.com/*", "*://*.imgur.com/*"]
+                urls: blockedUrls
             }, 
             ["blocking"]
         );
-    } else if (chrome.webRequest.onBeforeRequest.hasListener(blockingCallback)){
-        // remove the listener so sites no longer blocked
-        chrome.webRequest.onBeforeRequest.removeListener(blockingCallback);
     }
 }
 
@@ -55,21 +60,30 @@ function blockingCallback(details){
     };
 }
 
-// refer: https://developer.chrome.com/extensions/storage
-chrome.storage.onChanged.addListener(function(changes, namespace){
-    for(var key in changes){
-        var storageChange = changes[key];
-        if(key == "outlineColor"){
-            outlineColor = storageChange.newValue;
+// listen for option changes
+function storageListener(){
+    // refer: https://developer.chrome.com/extensions/storage
+    chrome.storage.onChanged.addListener(function(changes, namespace){
+        for(var key in changes){
+            var storageChange = changes[key];
+            if(key == "outlineColor"){
+                outlineColor = storageChange.newValue;
+            } else if (key == "blockedUrlArray"){
+                blockedUrls = storageChange.newValue;
+                blockSites(studyModeCheckState);
+            }
         }
-    }
-});
+    });
+}
 
+// for on load
 function restoreOptions(){
-    chrome.storage.sync.get({ //asynchronous
+    chrome.storage.sync.get({
         // set default vals
-        outlineColor: "blue"
+        outlineColor: "blue",
+        blockedUrlArray: [""]
     }, function(obj){
         outlineColor = obj.outlineColor;
+        blockedUrls = obj.blockedUrlArray;
     })
 }
