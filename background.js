@@ -124,7 +124,7 @@ function createNotification(msg, interval){
             type: "basic",
             title: "Reminder",
             message: msg,
-            iconUrl: "assets/chromelogo_128.png",
+            iconUrl: "assets/graduate_128.png",
             requireInteraction: true
         };
         // refer: https://developer.chrome.com/apps/richNotifications

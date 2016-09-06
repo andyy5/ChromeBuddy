@@ -1,11 +1,11 @@
 {
   "name": "ChromeBuddy",
-  "description": "compilation of convenient tools",
+  "description": "compilation of convenient tools. Icon made by Freepik from www.flaticon.com.",
   "version": "1.0",
 
   "icons": {
     // "16": "assets/icon_16.png",
-    "128": "assets/chromelogo_128.png"
+    "128": "assets/graduate_128.png"
   },
 
   "browser_action": {
