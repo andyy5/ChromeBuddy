@@ -1,6 +1,7 @@
 'use strict'
 
 var blockedUrls = [];
+var reminders = [];
 
 $(document).ready(function() {
 	restoreOptions();
@@ -11,8 +12,12 @@ function handleSave(){
 	$(document).on('click', '#btn-save', function(){
 		saveOptions();
 		updateBlockedUrlDropdown(blockedUrls);
+		updateReminderDropDown(reminders);
 		$("#add-url").val(""); // blank add url textbox
+		$("#add-reminder").val("");
+		$("#setInterval-reminder").val("");
 		console.log("blkd urls final: " + blockedUrls);
+		console.log("reminders final: " + reminders);
 	});
 }
 
@@ -94,10 +99,59 @@ function updateBlockedUrlDropdown(input){
 	});
 }
 
+// returns final array of reminders
+function handleReminders(){
+	addReminder();
+	removeReminder();
+	return reminders;
+}
+
+function addReminder(){
+	var val_msg = $("#add-reminder").val();
+	// input cannot have pipe delimitor
+	if (val_msg.includes("|")){
+		val_msg = val_msg.replace(/\|/g,"/"); // replace all pipes
+	}
+	var val_interval = $("#setInterval-reminder").val();
+	if (isInt(val_interval) & val_msg.trim != ""){
+		val_interval = parseInt(val_interval, 10);
+		if (val_interval > 0){
+			val_interval = Math.round(val_interval);
+			var item = val_msg + "|" + val_interval;
+			reminders.push(item);
+		}
+	}
+	$.unique(reminders);
+}
+
+function removeReminder(){
+	var val = $("#remove-reminder option:selected").text();
+	if (val != ""){
+		for (var i = 0; i < reminders.length; i++){
+ 			if (reminders[i] == val){ 
+ 				reminders.splice(i, 1);
+ 				break;
+ 			}
+ 		}
+	}
+}
+
+function updateReminderDropDown(input){
+	reminders = input;
+	$("#remove-reminder").children("option:not(:first)").remove();
+	$.each(reminders, function(key, value) {
+    	$("#remove-reminder")
+    		.append($("<option></option>")
+        	.attr("value", key)
+        	.text(value));
+	});
+}
+
 function saveOptions(){
 	chrome.storage.sync.set({
 		outlineColor: $("#outline-color option:selected").text(),
-		blockedUrlArray: handleBlockUrls()
+		blockedUrlArray: handleBlockUrls(),
+		reminderArray: handleReminders()
 	}, function() {
 		$("#save-status").html("Save successful");
         setTimeout(function() {
@@ -110,9 +164,15 @@ function restoreOptions(){
 	chrome.storage.sync.get({
 		// set default vals
 		outlineColor: $("#outline-color").val($("#outline-color option:first").val()),
-		blockedUrlArray: []
+		blockedUrlArray: [],
+		reminderArray: []
 	}, function(obj){
 		$("#outline-color").val(obj.outlineColor);
 		updateBlockedUrlDropdown(obj.blockedUrlArray);
+		updateReminderDropDown(obj.reminderArray);
 	})
+}
+
+function isInt(value) {
+  return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 }

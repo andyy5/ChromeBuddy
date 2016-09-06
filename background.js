@@ -3,6 +3,7 @@
 var studyModeCheckState = false;
 var outlineColor = "blue";
 var blockedUrls = [""];
+var reminderIntervalIds = [];
 
 $(document).ready(function() {
     restoreOptions();
@@ -71,6 +72,8 @@ function storageListener(){
             } else if (key == "blockedUrlArray"){
                 blockedUrls = storageChange.newValue;
                 blockSites(studyModeCheckState);
+            } else if (key == "reminderArray"){
+                createReminders(storageChange.newValue);
             }
         }
     });
@@ -81,9 +84,52 @@ function restoreOptions(){
     chrome.storage.sync.get({
         // set default vals
         outlineColor: "blue",
-        blockedUrlArray: [""]
+        blockedUrlArray: [""],
+        reminderArray: []
     }, function(obj){
         outlineColor = obj.outlineColor;
         blockedUrls = obj.blockedUrlArray;
+        createReminders(obj.reminderArray);
     })
+}
+
+// everytime this is called, we recreate all the reminders (and clear the old ones)
+// input array: ["msg || interval"]
+function createReminders(array){
+    console.log("reminders create: " + array)
+
+    // Remove all the previous setIntervals
+    for (var k = 0; k < reminderIntervalIds.length; k++){
+        clearInterval(reminderIntervalIds[k]);
+    }
+    reminderIntervalIds = [];
+
+    for (var i = 0; i < array.length; i++){
+        var item = array[i];
+        var temp_array = [];
+        item = item.trim();
+        temp_array = item.split("|"); // split based on pipe delimitor
+        var msg = temp_array[0];
+        var interval = temp_array[1] * 60000; // mins -> seconds
+
+        // create seperate instances of setInterval for each item
+        createNotification(msg, interval);
+    }
+}
+
+function createNotification(msg, interval){
+
+    var intervalId = setInterval(function(){
+        var options = {
+            type: "basic",
+            title: "Reminder",
+            message: msg,
+            iconUrl: "assets/chromelogo_128.png",
+            requireInteraction: true
+        };
+        // refer: https://developer.chrome.com/apps/richNotifications
+        chrome.notifications.create(options);
+    }, interval);
+
+    reminderIntervalIds.push(intervalId);
 }

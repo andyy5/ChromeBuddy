@@ -18,6 +18,10 @@ body {
 	margin-bottom: 3%;
 }
 
+#studymode-container {
+	margin-bottom: 3%;
+}
+
 #studymode-container p {
 	margin-bottom: 5px;
 }
@@ -30,7 +34,15 @@ body {
 	margin-top: 5%;
 }
 
-#add-url-note {
+.note {
 	font-style: italic;
 	font-size: 14px;
+}
+
+#setInterval-reminder{
+	width: 20px;
+}
+
+#reminder-container form{
+	margin-bottom: 5px;
 }
