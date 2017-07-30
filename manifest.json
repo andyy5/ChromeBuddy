@@ -2,31 +2,27 @@
   "name": "Junior",
   "description": "compilation of convenient tools. Icon made by Freepik from www.flaticon.com.",
   "version": "0.1",
-
   "icons": {
     // "16": "assets/icon_16.png",
     "128": "assets/graduate_128.png"
   },
-
   "browser_action": {
     "default_popup": "index.html"
   },
-
   "options_page": "options.html",
-
   "permissions": [
     "notifications",
     "storage",
-    "webRequest", 
-    "webRequestBlocking", 
-    "http://*/*", 
+    "webRequest",
+    "webRequestBlocking",
+    "http://*/*",
     "https://*/*"
   ],
-
   "background": {
-    "scripts": ["jquery-3.1.0.min.js", "background.js"]
+    "scripts": [
+      "jquery-3.1.0.min.js",
+      "background.js"
+    ]
   },
-
   "manifest_version": 2
-
 }
