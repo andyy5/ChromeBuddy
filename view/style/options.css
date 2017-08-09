@@ -1,0 +1,53 @@
+body {
+    font-family: 'Helvetica', 'Verdana';
+    font-size: 16px;
+    color: black;
+    background-color: white;
+    margin: 2.5%;
+}
+
+#banner {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 3%;
+    border-bottom: solid;
+}
+
+#location-container p {
+    display: inline-block;
+    margin-bottom: 3%;
+}
+
+#outline-container p {
+    display: inline-block;
+    margin-bottom: 3%;
+}
+
+#studymode-container {
+    margin-bottom: 3%;
+}
+
+#studymode-container p {
+    margin-bottom: 5px;
+}
+
+#studymode-container form {
+    margin-bottom: 5px;
+}
+
+#btn-save {
+    margin-top: 5%;
+}
+
+.note {
+    font-style: italic;
+    font-size: 14px;
+}
+
+#setInterval-reminder {
+    width: 20px;
+}
+
+#reminder-container form {
+    margin-bottom: 5px;
+}

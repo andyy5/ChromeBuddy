@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Browsing Stats</title>
+
+    <link href="style/normalize.css" rel="stylesheet">
+    <link href="style/stats.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div id="stats-header">
+    <p>Browsing Stats</p>
+</div>
+
+<div id="stats-content">
+    <select id="stats-period-dropdown">
+        <option>Current Session(s)</option>
+    </select>
+    <table id="stats-table">
+        <tr>
+            <th>Domain</th>
+            <th>Time</th>
+        </tr>
+    </table>
+</div>
+
+<div id="stats-footer">
+    <button id="btn-clear-stats">Clear</button>
+    &nbsp;
+    <button id="btn-refresh-stats">Refresh</button>
+</div>
+
+<script src="scripts/jquery-3.1.0.min.js"></script>
+<script src="scripts/stats-page.js"></script>
+</body>
+</html>
